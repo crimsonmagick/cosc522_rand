@@ -1,54 +1,71 @@
-%! Author = welby
-%! Date = 9/9/25
-
-% Preamble
-\documentclass[11pt]
-
-% Packages
-\usepackage{amsmath}
+\documentclass{article}
 \usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{caption}
+\usepackage[margin=0.5in]{geometry}
+\usepackage{float}
 
-% Document
+\title{Encoding 01110010}
+\author{Welby Seely}
+\date{9/9/2025}
+
 \begin{document}
+    \pagenumbering{gobble} % disable page numbering
 
-    \begin{figure}[htbp]
+% --- Title page only ---
+    \begin{titlepage}
+        \centering
+        \vspace*{\fill}   % push content to vertical center
+        {\LARGE \bfseries Encoding 01110010 \par}
+        \vspace{1em}
+        {\LARGE \bfseries Welby Seely \par}
+        \vspace{1em}
+        {\LARGE \bfseries 9/9/2025 \par}
+        \vspace*{\fill}
+    \end{titlepage}
+
+% --- Figures start on page 2 ---
+    \begin{figure}[H]
         \centering
 
-        % Row 1
-        \begin{subfigure}{0.3\textwidth}
+        % Row 1 (2 items)
+        \begin{subfigure}{0.49\textwidth}
+            \centering
             \includegraphics[width=\linewidth]{nrz}
             \caption{NRZ (Active Low)}
         \end{subfigure}
         \hfill
-        \begin{subfigure}{0.3\textwidth}
+        \begin{subfigure}{0.49\textwidth}
+            \centering
             \includegraphics[width=\linewidth]{nrzi}
             \caption{NRZI}
         \end{subfigure}
-        \hfill
-        \begin{subfigure}{0.3\textwidth}
+
+        \bigskip
+
+        % Row 2 (2 items)
+        \begin{subfigure}{0.49\textwidth}
+            \centering
             \includegraphics[width=\linewidth]{manchester}
             \caption{Manchester}
         \end{subfigure}
-
-        \vspace{1em}
-
-        % Row 2
-        \begin{subfigure}{0.3\textwidth}
+        \hfill
+        \begin{subfigure}{0.49\textwidth}
+            \centering
             \includegraphics[width=\linewidth]{differential_manchester}
             \caption{Differential Manchester}
         \end{subfigure}
-        \hfill
-        \begin{subfigure}{0.3\textwidth}
+
+        \bigskip
+
+        % Row 3 (1 item, centered and wide)
+        \begin{subfigure}{0.7\textwidth}
+            \centering
             \includegraphics[width=\linewidth]{ami}
             \caption{AMI}
         \end{subfigure}
-        \hfill
-        \begin{subfigure}{0.3\textwidth}
-            % empty slot, or you can drop this
-        \end{subfigure}
 
-        \caption{ NRZ, NRZI, Manchester, Differential Manchester, and AMI.}
+        \caption{NRZ, NRZI, Manchester, Differential Manchester, and AMI.}
     \end{figure}
-
 
 \end{document}
