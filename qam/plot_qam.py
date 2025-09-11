@@ -56,7 +56,7 @@ def plot_qam():
     ]
     signal_str = "".join("".join(str(b) for b in triplet) for triplet in signal)
 
-    theta_p = 0
+    theta_p = np.pi / 2
 
     # rectangular coordinates for matplotlib
     signal_b = []  # let's use b for baud
@@ -65,8 +65,8 @@ def plot_qam():
     baud_offset = -1
     period = 1.0  # period is 1 baud
 
-    # assume theta = 0 to start
-    b_arr, y_arr = sinusoid_segment(1, 0)
+    # assume theta = pi / 2 to start
+    b_arr, y_arr = sinusoid_segment(1, theta_p)
     signal_b.append(b_arr + baud_offset)
     signal_y.append(y_arr)
     baud_offset += period
@@ -105,7 +105,7 @@ def plot_qam():
         txt = "".join(map(str, triplet))  # e.g., '101'
         plt.text(x, y_label, txt, ha='center', va='bottom', fontsize=11)
 
-    plt.text(-0.25, y_label + 1, "Welby Seely COSC 522 9/11/25", ha='center', va='bottom', fontsize=14)
+    plt.text(-0.25, y_label + 1, "Welby Seely COSC 522 9/11/25 - Corrected", ha='center', va='bottom', fontsize=14)
 
     plt.show()
 
