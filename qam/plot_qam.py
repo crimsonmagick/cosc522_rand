@@ -1,22 +1,49 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
+constellation = {
+    (0, 0, 0): (1, 0),
+    (0, 0, 1): (2, 0),
+    (0, 1, 0): (1, np.pi / 2),
+    (0, 1, 1): (2, np.pi / 2),
+    (1, 0, 0): (1, np.pi),
+    (1, 0, 1): (2, np.pi),
+    (1, 1, 0): (1, 3 * np.pi / 2),
+    (1, 1, 1): (2, 3 * np.pi / 2)
+}
 
 def normalize_angle(angle):
     return (angle + 2 * np.pi) % (2 * np.pi)
 
+def plot_constellation():
+    pts = []
+    labels = []
+    for bits, (A, theta) in constellation.items():
+        I = A * np.cos(theta)
+        Q = A * np.sin(theta)
+        pts.append((I, Q))
+        labels.append("".join(map(str, bits)))
+
+    I_vals = np.array([p[0] for p in pts]) # apparently called in-phase
+    Q_vals = np.array([p[1] for p in pts]) # apparently called quadarature
+
+    plt.figure(figsize=(5, 5))
+    plt.scatter(I_vals, Q_vals, s=60)
+    for (x, y), lab in zip(pts, labels):
+        plt.text(x, y, " "+lab, va="center", ha="left", fontsize=10)
+
+    # Axes through origin
+    lim = max(2.2, 1.2 * max(np.abs(I_vals).max(), np.abs(Q_vals).max()))
+    plt.axhline(0, color="0.7", linewidth=1)
+    plt.axvline(0, color="0.7", linewidth=1)
+    plt.xlim(-lim, lim)
+    plt.ylim(-lim, lim)
+    plt.gca().set_aspect("equal", adjustable="box")
+    plt.grid(True, linestyle=":")
+    plt.title("Constellation")
 
 def plot_qam():
-    constellation = {
-        (0, 0, 0): (1, 0),
-        (0, 0, 1): (2, 0),
-        (0, 1, 0): (1, np.pi / 2),
-        (0, 1, 1): (2, np.pi / 2),
-        (1, 0, 0): (1, np.pi),
-        (1, 0, 1): (2, np.pi),
-        (1, 1, 0): (1, 3 * np.pi / 2),
-        (1, 1, 1): (2, 3 * np.pi / 2)
-    }
+
     signal = [
         (1, 0, 1),
         (1, 1, 0),
@@ -35,8 +62,14 @@ def plot_qam():
     signal_b = []  # let's use b for baud
     signal_y = []
 
-    baud_offset = 0
+    baud_offset = -1
     period = 1.0  # period is 1 baud
+
+    # assume theta = 0 to start
+    b_arr, y_arr = sinusoid_segment(1, 0)
+    signal_b.append(b_arr + baud_offset)
+    signal_y.append(y_arr)
+    baud_offset += period
 
     for triplet in signal:
         amp, theta_delta = constellation[triplet]
@@ -70,7 +103,7 @@ def plot_qam():
     for k, triplet in enumerate(signal):
         x = k * period + 0.5 * period
         txt = "".join(map(str, triplet))  # e.g., '101'
-        plt.text(x, y_label, txt, ha='center', va='bottom', fontsize=10)
+        plt.text(x, y_label, txt, ha='center', va='bottom', fontsize=11)
 
     plt.text(-0.25, y_label + 1, "Welby Seely COSC 522 9/11/25", ha='center', va='bottom', fontsize=14)
 
@@ -93,4 +126,5 @@ def sinusoid_segment(amp, phase, f_c=1, T=1, samples=100):
 
 
 if __name__ == '__main__':
+    plot_constellation()
     plot_qam()
